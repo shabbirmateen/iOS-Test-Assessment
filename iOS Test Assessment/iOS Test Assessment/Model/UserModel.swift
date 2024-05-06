@@ -8,10 +8,9 @@
 import Foundation
 
 
-struct User : Decodable, Identifiable{
-    var userId : Int
-    var id : Int
-    var title : String
-    var body : String
-    
+struct User : Codable, Identifiable{
+    var userId : Int = 0
+    var id : Int = 0
+    var title : String = ""
+    var body : String = ""
 }

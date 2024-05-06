@@ -12,6 +12,7 @@ struct UserListView: View {
     //MARK:- PROPERTIES
     @StateObject var usersVM = UsersViewModel()
     @State private var isOpenDetailView = false
+    @State private var singleUser = User()
     
     //MARK:- BODY
     var body: some View {
@@ -22,14 +23,15 @@ struct UserListView: View {
                             UserView(user: user)
                             .onTapGesture {
                                 self.isOpenDetailView = true
+                                self.singleUser = user
                             }
                             .onAppear(){
                                 self.listItemAppear(user)
-                            }.navigationDestination(isPresented: $isOpenDetailView) {
-                                DetailView(user: user)
                             }
                         }
                     }
+                }.navigationDestination(isPresented: $isOpenDetailView) {
+                    DetailView(user: self.singleUser)
                 }
             }
             .navigationTitle("Users")
