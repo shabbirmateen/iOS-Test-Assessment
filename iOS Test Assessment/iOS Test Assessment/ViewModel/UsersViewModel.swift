@@ -27,7 +27,7 @@ class UsersViewModel : ObservableObject {
         }
     }
     
-    public func isLastItem(_ userList:[User], _ user: User) -> Bool {
+    func isLastItem(_ userList:[User], _ user: User) -> Bool {
         guard !userList.isEmpty else {
             return false
         }
@@ -40,16 +40,16 @@ class UsersViewModel : ObservableObject {
     //MARK: - API CALL
     func getUsers() {
         let apiUrl = "https://jsonplaceholder.typicode.com/posts?_page=\(page)&_limit=\(pageLimit)"
-        
-        APIManager.shared.apiCall(urlString: apiUrl) { response in
+      
+        APIManager.shared.apiCall(urlString: apiUrl, resultType: [User].self) { response in
             switch response {
-             case .success(let userList):
+             case .success(let model):
                 DispatchQueue.main.async {
-                    guard userList.count > 0 else {
+                    guard (model?.count ?? 0) > 0 else {
                         self.limitExceed = true
                         return
                     }
-                self.users.append(contentsOf: userList)
+                    self.users.append(contentsOf: model ?? [])
                 }
             case .failure(let error):
                 print(error)
